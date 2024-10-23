@@ -18,6 +18,7 @@ bottom_wall = pygame.Rect(0,570,720,2)
 player = Player(300, 300, 15, 15)
 enemies = []
 bullets = []
+score = 0
 
 while running:
     for event in pygame.event.get():
@@ -44,8 +45,11 @@ while running:
         pygame.draw.rect(screen, (0, 255, 0), enemy, 0)
         for bullet in bullets:
             if bullet.colliderect(enemy):
-                enemies.remove(enemy)
                 bullets.remove(bullet)
+                enemy.health -= 1
+                if enemy.health == 0:
+                    enemies.remove(enemy)
+                    score += 1
         if player.colliderect(enemy):
             running = False
         if enemy.y > 570:
@@ -55,6 +59,7 @@ while running:
     pygame.draw.rect(screen, (0, 0, 0), left_wall, 0)
     pygame.draw.rect(screen, (0, 0, 0), right_wall, 0)
 
+    pygame.display.set_caption(f"Score: {score}")
     pygame.display.flip()
 
     dt = clock.tick(60) / 1000
