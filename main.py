@@ -1,7 +1,7 @@
 import pygame
 import random
 from data.player import Player
-from data.enemy import Enemy
+from data.horde import Horde
 from data.bullet import Bullet
 # pygame setup
 pygame.init()
@@ -16,9 +16,10 @@ top_wall = pygame.Rect(0,0,720,2)
 bottom_wall = pygame.Rect(0,570,720,2)
 
 player = Player(300, 300, 15, 15)
-enemies = []
 bullets = []
+horde = Horde()
 score = 0
+
 
 while running:
     for event in pygame.event.get():
@@ -33,14 +34,14 @@ while running:
     if keys[pygame.K_SPACE] and len(bullets) == 0:
         bullets.append(Bullet(player.x, player.y, 5, 5))
 
-    if len(enemies) < 5:
-        enemies.append(Enemy(random.randint(0, 720), 0, 20, 15))
+    if len(horde.enemies) == 0:
+        horde.spawn()
 
     for bullet in bullets:
         bullet.move()
         pygame.draw.rect(screen, (255, 0, 0), bullet, 0)
 
-    for enemy in enemies:
+    for enemy in horde.enemies:
         enemy.move()
         pygame.draw.rect(screen, (0, 255, 0), enemy, 0)
         for bullet in bullets:
@@ -48,12 +49,14 @@ while running:
                 bullets.remove(bullet)
                 enemy.health -= 1
                 if enemy.health == 0:
-                    enemies.remove(enemy)
+                    horde.enemies.remove(enemy)
                     score += 1
+            if bullet.y < 0:
+                bullets.remove(bullet)
         if player.colliderect(enemy):
             running = False
         if enemy.y > 570:
-            enemies.remove(enemy)
+            horde.enemies.remove(enemy)
 
     pygame.draw.rect(screen, (255, 255, 255), player, 0)
     pygame.draw.rect(screen, (0, 0, 0), left_wall, 0)
