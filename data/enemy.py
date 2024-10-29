@@ -4,8 +4,13 @@ import random
 class Enemy(pygame.Rect):
     def __init__(self, x, y, width, height):
         super().__init__(x, y, width, height)
-        self.speed = 0
+        self.speed = 1
         self.health = 1
 
-    def move(self):
+    def move(self, direction):
         self.y += self.speed
+
+        if direction == "right":
+            self.x += self.speed
+        elif direction == "left":   
+            self.x -= self.speed
