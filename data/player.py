@@ -3,7 +3,7 @@ import pygame
 class Player(pygame.Rect):
     def __init__(self, x, y, width, height):
         super().__init__(x, y, width, height)
-        self.speed = 2
+        self.speed = 1
 
     def move(self, keys, top_wall, bottom_wall, left_wall, right_wall):
         if keys[pygame.K_w] and not self.colliderect(top_wall):

@@ -37,6 +37,8 @@ while running:
     if len(horde.enemies) == 0:
         horde.spawn()
 
+    pygame.draw.rect(screen, (255, 255, 255), horde, 0)
+
     for bullet in bullets:
         bullet.move()
         pygame.draw.rect(screen, (255, 0, 0), bullet, 0)
@@ -59,7 +61,7 @@ while running:
 
     horde.move()
     if horde.colliderect(right_wall) or horde.colliderect(left_wall):
-        horde.direction = "right" if horde.direction == "left" else "left"
+        horde.change_direction()
     
     pygame.draw.rect(screen, (255, 255, 255), player, 0)
     pygame.draw.rect(screen, (0, 0, 0), left_wall, 0)
@@ -68,6 +70,6 @@ while running:
     pygame.display.set_caption(f"Score: {score}")
     pygame.display.flip()
 
-    dt = clock.tick(30) / 1000
+    dt = clock.tick(60) / 1000
 
 pygame.quit()

@@ -9,6 +9,8 @@ class Horde(pygame.Rect):
         self.height = 220
         self.enemies = []
         self.direction = "right"
+        self.pos = pygame.math.Vector2(self.x, self.y)
+        self.velocity = pygame.math.Vector2(0.50, 0.06)
 
     def spawn(self):
         for i in range(5):
@@ -17,10 +19,17 @@ class Horde(pygame.Rect):
     
     def move(self):
         for enemy in self.enemies:
-            enemy.move(self.direction)
-        if self.direction == "right":
-            self.x += 1
-        else:
-            self.x -= 1
+            enemy.move()
+        self.pos += self.velocity
+        self.x = self.pos.x
+        self.y = self.pos.y
 
-        self.y += 1
+    def change_direction(self):
+        if self.direction == "right":
+            self.direction = "left"
+        else:
+            self.direction = "right"
+        
+        self.velocity.x *= -1
+        for enemy in self.enemies:
+            enemy.speed.x *= -1
