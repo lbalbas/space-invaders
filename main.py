@@ -19,14 +19,18 @@ player = Player(300, 300, 15, 15)
 horde = Horde()
 score = 0
 
+font = pygame.font.Font('freesansbold.ttf', 32)
 
+pygame.display.set_caption("Space Invaders")
 while running:
+    text = font.render("Score: " + str(score), True, (255,255,255), (0,0,0))
+    textRect = text.get_rect()
     for event in pygame.event.get():
         if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
             running = False
 
     screen.fill("black")
-
+    screen.blit(text, (10, 10))
     keys = pygame.key.get_pressed()
     player.move(keys, top_wall, bottom_wall, left_wall, right_wall)
 
@@ -78,7 +82,7 @@ while running:
     pygame.draw.rect(screen, (0, 0, 0), left_wall, 0)
     pygame.draw.rect(screen, (0, 0, 0), right_wall, 0)
 
-    pygame.display.set_caption(f"Score: {score}")
+
     pygame.display.flip()
 
     dt = clock.tick(60) / 1000
