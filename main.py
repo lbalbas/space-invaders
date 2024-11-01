@@ -16,7 +16,6 @@ top_wall = pygame.Rect(0,0,720,2)
 bottom_wall = pygame.Rect(0,570,720,2)
 
 player = Player(300, 300, 15, 15)
-bullets = []
 horde = Horde()
 score = 0
 
@@ -31,29 +30,33 @@ while running:
     keys = pygame.key.get_pressed()
     player.move(keys, top_wall, bottom_wall, left_wall, right_wall)
 
-    if keys[pygame.K_SPACE] and len(bullets) == 0:
-        bullets.append(Bullet(player.x, player.y, 5, 5))
+    if keys[pygame.K_SPACE] and len(player.bullets) == 0:
+        player.bullets.append(Bullet(player.x, player.y, 5, 5, -1))
 
     if len(horde.enemies) == 0:
         horde.spawn()
 
-    pygame.draw.rect(screen, (255, 255, 255), horde, 0)
-
-    for bullet in bullets:
+    for bullet in player.bullets:
         bullet.move()
         pygame.draw.rect(screen, (255, 0, 0), bullet, 0)
+    
+    for bullet in horde.bullets:
+        bullet.move()
+        pygame.draw.rect(screen, (0, 255, 0), bullet, 0)    
 
     for enemy in horde.enemies:
+        if random.random() < 0.00010:
+            horde.bullets.append(Bullet(enemy.x, enemy.y, 5, 5, 1))
         pygame.draw.rect(screen, (0, 255, 0), enemy, 0)
-        for bullet in bullets:
+        for bullet in player.bullets:
             if bullet.colliderect(enemy):
-                bullets.remove(bullet)
+                player.bullets.remove(bullet)
                 enemy.health -= 1
                 if enemy.health == 0:
                     horde.enemies.remove(enemy)
                     score += 1
             if bullet.y < 0:
-                bullets.remove(bullet)
+                player.bullets.remove(bullet)
         if player.colliderect(enemy):
             running = False
         if enemy.y > 570:
@@ -63,6 +66,14 @@ while running:
     if horde.colliderect(right_wall) or horde.colliderect(left_wall):
         horde.change_direction()
     
+    if horde.colliderect(bottom_wall):
+        running = False
+    
+    for bullet in horde.bullets:
+        if bullet.colliderect(player):
+            horde.bullets.remove(bullet)
+            running = False
+
     pygame.draw.rect(screen, (255, 255, 255), player, 0)
     pygame.draw.rect(screen, (0, 0, 0), left_wall, 0)
     pygame.draw.rect(screen, (0, 0, 0), right_wall, 0)

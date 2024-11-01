@@ -11,6 +11,7 @@ class Horde(pygame.Rect):
         self.direction = "right"
         self.pos = pygame.math.Vector2(self.x, self.y)
         self.velocity = pygame.math.Vector2(0.50, 0.06)
+        self.bullets = []
 
     def spawn(self):
         for i in range(5):
