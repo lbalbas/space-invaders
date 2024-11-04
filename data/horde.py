@@ -1,4 +1,3 @@
-import random
 import pygame
 from data.enemy import Enemy
 class Horde(pygame.Rect):

@@ -42,18 +42,21 @@ while running:
 
     for bullet in player.bullets:
         bullet.move()
-        pygame.draw.rect(screen, (255, 0, 0), bullet, 0)
+        screen.blit(bullet.image, (bullet.x, bullet.y))
     
     for bullet in horde.bullets:
         bullet.move()
-        pygame.draw.rect(screen, (0, 255, 0), bullet, 0)    
+        screen.blit(bullet.image, (bullet.x, bullet.y))
+        if bullet.rect.colliderect(player.rect):
+            horde.bullets.remove(bullet)
+            running = False    
 
     for enemy in horde.enemies:
+        screen.blit(enemy.image, (enemy.x, enemy.y))
         if random.random() < 0.00010:
             horde.bullets.append(Bullet(enemy.x, enemy.y, 5, 5, 1))
-        pygame.draw.rect(screen, (0, 255, 0), enemy, 0)
         for bullet in player.bullets:
-            if bullet.colliderect(enemy):
+            if bullet.rect.colliderect(enemy.rect):
                 player.bullets.remove(bullet)
                 enemy.health -= 1
                 if enemy.health == 0:
@@ -61,7 +64,7 @@ while running:
                     score += 1
             if bullet.y < 0:
                 player.bullets.remove(bullet)
-        if player.colliderect(enemy):
+        if enemy.rect.colliderect(player.rect):
             running = False
         if enemy.y > 570:
             horde.enemies.remove(enemy)
@@ -73,12 +76,9 @@ while running:
     if horde.colliderect(bottom_wall):
         running = False
     
-    for bullet in horde.bullets:
-        if bullet.colliderect(player):
-            horde.bullets.remove(bullet)
-            running = False
 
-    pygame.draw.rect(screen, (255, 255, 255), player, 0)
+    screen.blit(player.image, (player.x, player.y))
+    
     pygame.draw.rect(screen, (0, 0, 0), left_wall, 0)
     pygame.draw.rect(screen, (0, 0, 0), right_wall, 0)
 
