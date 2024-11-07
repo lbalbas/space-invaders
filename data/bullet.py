@@ -11,7 +11,8 @@ class Bullet(pygame.sprite.Sprite):
         self.pos = pygame.math.Vector2(self.x, self.y)
         self.velocity = pygame.math.Vector2(0, direction)
 
-    def move(self):
+    def move(self, screen):
         self.pos += self.velocity
         self.y = self.pos.y
         self.rect = self.image.get_rect(topleft = (self.x, self.y))
+        screen.blit(self.image, (self.x, self.y))

@@ -3,11 +3,14 @@ import random
 from data.player import Player
 from data.horde import Horde
 from data.bullet import Bullet
+from data.specialEnemy import SpecialEnemy
 # pygame setup
 pygame.init()
 screen = pygame.display.set_mode((720, 570))
 clock = pygame.time.Clock()
+
 running = True
+
 dt = 0
 
 left_wall = pygame.Rect(0,0,2,570)
@@ -17,11 +20,22 @@ bottom_wall = pygame.Rect(0,570,720,2)
 
 player = Player(300, 300, 15, 15)
 horde = Horde()
+specialEnemy = SpecialEnemy(15, 15)
 score = 0
 
 font = pygame.font.Font('freesansbold.ttf', 32)
 
 pygame.display.set_caption("Space Invaders")
+
+
+def game_over():
+    global running
+    running = False
+
+def add_score(int):
+    global score
+    score += int
+
 while running:
     text = font.render("Score: " + str(score), True, (255,255,255), (0,0,0))
     textRect = text.get_rect()
@@ -32,52 +46,25 @@ while running:
     screen.fill("black")
     screen.blit(text, (10, 10))
     keys = pygame.key.get_pressed()
-    player.move(keys, top_wall, bottom_wall, left_wall, right_wall)
 
-    if keys[pygame.K_SPACE] and len(player.bullets) == 0:
-        player.bullets.append(Bullet(player.x, player.y, 5, 5, -1))
-
-    if len(horde.enemies) == 0:
+    if horde.enemies == []:
         horde.spawn()
 
-    for bullet in player.bullets:
-        bullet.move()
-        screen.blit(bullet.image, (bullet.x, bullet.y))
+    horde.move(screen)
+    horde.shoot()
+    horde.check_collisions(left_wall, right_wall, bottom_wall, game_over)
     
-    for bullet in horde.bullets:
-        bullet.move()
-        screen.blit(bullet.image, (bullet.x, bullet.y))
-        if bullet.rect.colliderect(player.rect):
-            horde.bullets.remove(bullet)
-            running = False    
+    if not specialEnemy.hasSpawn and random.random() < 1 / 1:
+        specialEnemy.spawn()
+    elif specialEnemy.hasSpawn:
+        specialEnemy.update(screen)
+        specialEnemy.check_collisions(left_wall, right_wall, bottom_wall, game_over)
+        specialEnemy.shoot()
 
-    for enemy in horde.enemies:
-        screen.blit(enemy.image, (enemy.x, enemy.y))
-        if random.random() < 0.00010:
-            horde.bullets.append(Bullet(enemy.x, enemy.y, 5, 5, 1))
-        for bullet in player.bullets:
-            if bullet.rect.colliderect(enemy.rect):
-                player.bullets.remove(bullet)
-                enemy.health -= 1
-                if enemy.health == 0:
-                    horde.enemies.remove(enemy)
-                    score += 1
-            if bullet.y < 0:
-                player.bullets.remove(bullet)
-        if enemy.rect.colliderect(player.rect):
-            running = False
-        if enemy.y > 570:
-            horde.enemies.remove(enemy)
-
-    horde.move()
-    if horde.colliderect(right_wall) or horde.colliderect(left_wall):
-        horde.change_direction()
-    
-    if horde.colliderect(bottom_wall):
-        running = False
-    
-
-    screen.blit(player.image, (player.x, player.y))
+    player.draw(screen)
+    player.move(keys, top_wall, bottom_wall, left_wall, right_wall, screen)
+    player.shoot(keys)
+    player.check_collisions(horde, specialEnemy, game_over, add_score)
     
     pygame.draw.rect(screen, (0, 0, 0), left_wall, 0)
     pygame.draw.rect(screen, (0, 0, 0), right_wall, 0)
