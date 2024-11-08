@@ -5,14 +5,14 @@ from data.bullet import Bullet
 
 class Horde(pygame.Rect):
     def __init__(self):
-        self.x = 1
-        self.y = 1
+        self.x = 2
+        self.y = 2
         self.width = 520
         self.height = 220
         self.enemies = []
         self.direction = "right"
         self.pos = pygame.math.Vector2(self.x, self.y)
-        self.velocity = pygame.math.Vector2(0.50, 0.06)
+        self.velocity = pygame.math.Vector2(0.40, 0.05)
         self.bullets = []
 
     def spawn(self):
