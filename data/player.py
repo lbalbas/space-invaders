@@ -13,7 +13,7 @@ class Player(pygame.sprite.Sprite):
         self.bullets = []
 
     def move(self, keys, top_wall, bottom_wall, left_wall, right_wall, screen):
-        if (keys[pygame.K_a] or keys[pygame.K_LEFT]) and not self.rect.colliderect(right_wall) and not self.rect.colliderect(left_wall):
+        if (keys[pygame.K_a] or keys[pygame.K_LEFT]) and not self.rect.colliderect(left_wall):
             self.x -= 5
         if (keys[pygame.K_d] or keys[pygame.K_RIGHT]) and not self.rect.colliderect(right_wall):
             self.x += 5
