@@ -11,8 +11,9 @@ class Player(pygame.sprite.Sprite):
         self.y = y
         self.speed = 1
         self.bullets = []
+        self.lives = 2
 
-    def move(self, keys, top_wall, bottom_wall, left_wall, right_wall, screen):
+    def move(self, keys, left_wall, right_wall, screen):
         if (keys[pygame.K_a] or keys[pygame.K_LEFT]) and not self.rect.colliderect(left_wall):
             self.x -= 5
         if (keys[pygame.K_d] or keys[pygame.K_RIGHT]) and not self.rect.colliderect(right_wall):
@@ -41,20 +42,27 @@ class Player(pygame.sprite.Sprite):
                         add_score(special_enemy.score)
                         special_enemy.hasSpawn = False
                         self.bullets.remove(bullet)
+            for bullet in special_enemy.bullets:
+                if bullet.rect.colliderect(self.rect):
+                    special_enemy.bullets.remove(bullet)
+                    self.lives -= 1
+                    if self.lives < 0:
+                        game_over()
         
         for enemy in horde.enemies:
             if self.rect.colliderect(enemy.rect):
-                game_over()
+                self.lives -= 1
+                if self.lives < 0:
+                    game_over()
             for bullet in self.bullets:
                 if bullet.rect.colliderect(enemy.rect):
                     add_score(enemy.score)
                     horde.enemies.remove(enemy)
                     self.bullets.remove(bullet)
         
-        if self.rect.colliderect(special_enemy.rect):
-            game_over()
-        
         for bullet in horde.bullets:
             if bullet.rect.colliderect(self.rect):
-                self.bullets.remove(bullet)
-                game_over()
+                horde.bullets.remove(bullet)
+                self.lives -= 1
+                if self.lives < 0:
+                    game_over()

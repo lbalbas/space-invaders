@@ -19,7 +19,7 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft = (x, y))
         self.x = x
         self.y = y
-        self.speed = pygame.math.Vector2(0.40, 0.05)
+        self.speed = pygame.math.Vector2(0.50, 0)
         self.position = pygame.math.Vector2(x, y)
         self.health = 1
         self.shootChance = 0.00010

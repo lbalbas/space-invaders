@@ -7,7 +7,6 @@ from data.specialEnemy import SpecialEnemy
 # pygame setup
 pygame.init()
 
-bg = pygame.image.load("assets\SpaceInvaders_Background.png")
 screen = pygame.display.set_mode((720, 570))
 clock = pygame.time.Clock()
 
@@ -17,7 +16,6 @@ dt = 0
 
 left_wall = pygame.Rect(0,0,2,570)
 right_wall = pygame.Rect(720,0,2,570)
-top_wall = pygame.Rect(0,0,720,2)
 bottom_wall = pygame.Rect(0,570,720,2)
 
 player = Player(360, 520, 15, 15)
@@ -50,6 +48,7 @@ while running:
     keys = pygame.key.get_pressed()
 
     if horde.enemies == []:
+        player.lives = 2
         horde.spawn()
 
     horde.move(screen)
@@ -60,11 +59,11 @@ while running:
         specialEnemy.spawn()
     elif specialEnemy.hasSpawn:
         specialEnemy.update(screen)
-        specialEnemy.check_collisions(left_wall, right_wall, bottom_wall, game_over)
+        specialEnemy.check_collisions(left_wall, right_wall)
         specialEnemy.shoot()
 
     player.draw(screen)
-    player.move(keys, top_wall, bottom_wall, left_wall, right_wall, screen)
+    player.move(keys, left_wall, right_wall, screen)
     player.shoot(keys)
     player.check_collisions(horde, specialEnemy, game_over, add_score)
     

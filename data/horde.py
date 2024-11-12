@@ -3,31 +3,20 @@ from data.enemy import Enemy
 import random
 from data.bullet import Bullet
 
-class Horde(pygame.Rect):
+class Horde():
     def __init__(self):
-        self.x = 2
-        self.y = 2
-        self.width = 520
-        self.height = 220
         self.enemies = []
-        self.direction = "right"
-        self.pos = pygame.math.Vector2(self.x, self.y)
-        self.velocity = pygame.math.Vector2(0.40, 0.05)
         self.bullets = []
 
     def spawn(self):
         for i in range(5):
             for j in range(11):
-                self.enemies.append(Enemy(j * 50, i * 50, 20, 20, i))
+                self.enemies.append(Enemy(j * 45 + 5, i * 50, 20, 20, i))
     
     def move(self, screen):
         for enemy in self.enemies:
             screen.blit(enemy.image, (enemy.x, enemy.y))
             enemy.move()
-
-        self.pos += self.velocity
-        self.x = self.pos.x
-        self.y = self.pos.y
         for bullet in self.bullets:
             bullet.move(screen)
 
@@ -35,18 +24,18 @@ class Horde(pygame.Rect):
         for enemy in self.enemies:
             if random.random() < enemy.shootChance:
                 self.bullets.append(Bullet(enemy.x, enemy.y, 5, 5, 2))
-    def change_direction(self):
-        if self.direction == "right":
-            self.direction = "left"
-        else:
-            self.direction = "right"
-        
-        self.velocity.x *= -1
+    def change_direction(self):       
         for enemy in self.enemies:
             enemy.speed.x *= -1
+            enemy.rect.y += 20
+            enemy.position.y += 20
+
     
     def check_collisions(self, left_wall, right_wall, bottom_wall, game_over):
-        if self.colliderect(right_wall) or self.colliderect(left_wall):
-            self.change_direction()
-        if self.colliderect(bottom_wall):
-            game_over()
+        for enemy in self.enemies:
+            if enemy.rect.colliderect(bottom_wall):
+                game_over()
+                break
+            if enemy.rect.colliderect(left_wall) or enemy.rect.colliderect(right_wall):
+                self.change_direction()
+                break

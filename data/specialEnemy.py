@@ -30,7 +30,7 @@ class SpecialEnemy(Enemy):
             bullet.move(screen)
             if bullet.y < 0:
                 self.bullets.remove(bullet)
-    def check_collisions(self, left_wall, right_wall, bottom_wall, game_over):
+    def check_collisions(self, left_wall, right_wall):
         if self.rect.colliderect(right_wall) or self.rect.colliderect(left_wall):
             self.speed.x *= -1
     
