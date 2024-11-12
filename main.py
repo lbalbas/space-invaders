@@ -56,7 +56,7 @@ while running:
     horde.shoot()
     horde.check_collisions(left_wall, right_wall, bottom_wall, game_over)
     
-    if not specialEnemy.hasSpawn and random.random() < 1 / 900:
+    if not specialEnemy.hasSpawn and random.random() < 1 / 1500:
         specialEnemy.spawn()
     elif specialEnemy.hasSpawn:
         specialEnemy.update(screen)
