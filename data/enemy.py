@@ -9,6 +9,8 @@ sprites = [
     "assets/enemy-0-0.png",
 ]
 
+score = [30,20,20,10,10]
+
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, x, y, width, height, row):
         pygame.sprite.Sprite.__init__(self)
@@ -21,7 +23,7 @@ class Enemy(pygame.sprite.Sprite):
         self.position = pygame.math.Vector2(x, y)
         self.health = 1
         self.shootChance = 0.00010
-        self.score = 1
+        self.score = score[row]
     def move(self):
         self.position += self.speed
         self.x = self.position.x
