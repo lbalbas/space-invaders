@@ -15,8 +15,8 @@ class Horde():
     
     def move(self, screen):
         for enemy in self.enemies:
-            screen.blit(enemy.image, (enemy.x, enemy.y))
             enemy.move()
+            enemy.draw(screen)
         for bullet in self.bullets:
             bullet.move(screen)
 
