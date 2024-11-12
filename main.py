@@ -6,6 +6,8 @@ from data.bullet import Bullet
 from data.specialEnemy import SpecialEnemy
 # pygame setup
 pygame.init()
+
+bg = pygame.image.load("assets\SpaceInvaders_Background.png")
 screen = pygame.display.set_mode((720, 570))
 clock = pygame.time.Clock()
 
@@ -18,7 +20,7 @@ right_wall = pygame.Rect(720,0,2,570)
 top_wall = pygame.Rect(0,0,720,2)
 bottom_wall = pygame.Rect(0,570,720,2)
 
-player = Player(300, 300, 15, 15)
+player = Player(360, 520, 15, 15)
 horde = Horde()
 specialEnemy = SpecialEnemy(15, 15)
 score = 0

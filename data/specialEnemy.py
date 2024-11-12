@@ -36,4 +36,4 @@ class SpecialEnemy(Enemy):
     
     def shoot(self):
         if random.random() < self.shootChance:
-            self.bullets.append(Bullet(self.x, self.y, 5, 5, 1))
+            self.bullets.append(Bullet(self.x, self.y, 5, 5, 2))

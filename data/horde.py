@@ -34,7 +34,7 @@ class Horde(pygame.Rect):
     def shoot(self):
         for enemy in self.enemies:
             if random.random() < enemy.shootChance:
-                self.bullets.append(Bullet(enemy.x, enemy.y, 5, 5, 1))
+                self.bullets.append(Bullet(enemy.x, enemy.y, 5, 5, 2))
     def change_direction(self):
         if self.direction == "right":
             self.direction = "left"

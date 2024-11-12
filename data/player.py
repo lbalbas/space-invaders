@@ -13,13 +13,9 @@ class Player(pygame.sprite.Sprite):
         self.bullets = []
 
     def move(self, keys, top_wall, bottom_wall, left_wall, right_wall, screen):
-        if keys[pygame.K_w] and not self.rect.colliderect(top_wall):
-            self.y -= 5
-        if keys[pygame.K_s] and not self.rect.colliderect(bottom_wall):
-            self.y += 5
-        if keys[pygame.K_a] and not self.rect.colliderect(left_wall):
+        if (keys[pygame.K_a] or keys[pygame.K_LEFT]) and not self.rect.colliderect(right_wall) and not self.rect.colliderect(left_wall):
             self.x -= 5
-        if keys[pygame.K_d] and not self.rect.colliderect(right_wall):
+        if (keys[pygame.K_d] or keys[pygame.K_RIGHT]) and not self.rect.colliderect(right_wall):
             self.x += 5
 
         self.rect = self.image.get_rect(topleft = (self.x, self.y))
@@ -33,7 +29,7 @@ class Player(pygame.sprite.Sprite):
 
     def shoot(self, keys):
         if keys[pygame.K_SPACE] and len(self.bullets) < 1:
-            self.bullets.append(Bullet(self.x, self.y, 5, 5, -1))
+            self.bullets.append(Bullet(self.x, self.y, 5, 5, -2))
 
     def check_collisions(self, horde, special_enemy, game_over, add_score): 
             
