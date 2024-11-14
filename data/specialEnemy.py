@@ -17,6 +17,7 @@ class SpecialEnemy(Enemy):
         self.shootChance = 0.01
         self.bullets = []
         self.hasSpawn = False
+        self.count = 0
     
     def spawn(self):
         if not self.hasSpawn:
@@ -33,7 +34,12 @@ class SpecialEnemy(Enemy):
     def check_collisions(self, left_wall, right_wall):
         if self.rect.colliderect(right_wall) or self.rect.colliderect(left_wall):
             self.speed.x *= -1
+            self.count += 1
+        
+        if self.count == 3:
+            self.hasSpawn = False
+            self.bullets = []
     
     def shoot(self):
         if random.random() < self.shootChance:
-            self.bullets.append(Bullet(self.x, self.y, 5, 5, 2))
+            self.bullets.append(Bullet(self.x, self.y, 10, 10, 2))

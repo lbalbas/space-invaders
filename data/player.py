@@ -30,7 +30,7 @@ class Player(pygame.sprite.Sprite):
 
     def shoot(self, keys):
         if keys[pygame.K_SPACE] and len(self.bullets) < 1:
-            self.bullets.append(Bullet(self.x, self.y, 5, 5, -2))
+            self.bullets.append(Bullet(self.x, self.y, 10, 10, -2))
 
     def check_collisions(self, horde, special_enemy, game_over, add_score): 
             
@@ -41,6 +41,7 @@ class Player(pygame.sprite.Sprite):
                     if special_enemy.health == 0:
                         add_score(special_enemy.score)
                         special_enemy.hasSpawn = False
+                        special_enemy.bullets = []
                         self.bullets.remove(bullet)
             for bullet in special_enemy.bullets:
                 if bullet.rect.colliderect(self.rect):

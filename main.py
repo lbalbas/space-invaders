@@ -46,13 +46,16 @@ while running:
             game_state = RUNNING
             player = Player(360, 520, 15, 15)
             horde = Horde()
-            specialEnemy = SpecialEnemy(15, 15)
+            specialEnemy = SpecialEnemy(30, 30)
             score = 0
 
     if game_state == RUNNING:
-        text = font.render("Score: " + str(score), True, (255,255,255), (0,0,0))
-        textRect = text.get_rect()
-        screen.blit(text, (10, 10))
+        scoreText = font.render("Score: " + str(score), True, (255,255,255), (0,0,0))
+        textRect = scoreText.get_rect()
+        screen.blit(scoreText, (10, 10))
+        playerLivesText = font.render("Lives: " + str(player.lives), True, (255,255,255), (0,0,0))
+        textRect = playerLivesText.get_rect()
+        screen.blit(playerLivesText, (10, 40))
         keys = pygame.key.get_pressed()
 
         if horde.enemies == []:

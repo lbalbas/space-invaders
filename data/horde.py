@@ -11,7 +11,7 @@ class Horde():
     def spawn(self):
         for i in range(5):
             for j in range(11):
-                self.enemies.append(Enemy(j * 45 + 5, i * 50, 20, 20, i))
+                self.enemies.append(Enemy(j * 45 + 5, i * 50, 32, 32, i))
     
     def move(self, screen):
         for enemy in self.enemies:
@@ -23,7 +23,7 @@ class Horde():
     def shoot(self):
         for enemy in self.enemies:
             if random.random() < enemy.shootChance:
-                self.bullets.append(Bullet(enemy.x, enemy.y, 5, 5, 2))
+                self.bullets.append(Bullet(enemy.x, enemy.y, 10, 10, 2))
     def change_direction(self):       
         for enemy in self.enemies:
             enemy.speed.x *= -1
